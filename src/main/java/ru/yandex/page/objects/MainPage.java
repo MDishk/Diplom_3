@@ -31,6 +31,12 @@ public class MainPage {
     private final By toppingSection = By.xpath(".//span[text()='Начинки']/ancestor::div[contains(@class, 'tab_tab__1SPyG')]");
     //Локатор для кнопки "Оформить заказ"
     private final By createOrderButton = By.xpath(".//button[contains(@class, 'button_button__33qZ0') and contains(text(), 'Оформить заказ')]");
+    //Локатор для активного раздела "Булки"
+    private final By activeBunsSection = By.xpath(".//h2[contains(@class, 'text text_type_main-medium mb-6 mt-10') and contains(text(), 'Булки')]");
+    //Локатор для активного раздела "Соусы"
+    private final By activeSouseSection = By.xpath(".//span[text()='Соусы']/ancestor::div[contains(@class, 'tab_tab_type_current__2BEPc')]");
+    //Локатор для активного раздела "Начинки"
+    private final By activeToppingSection = By.xpath(".//span[text()='Начинки']/ancestor::div[contains(@class, 'tab_tab_type_current__2BEPc')]");
 
     @Step("Открытие главной страницы")
     public MainPage openMainPage() {
@@ -60,37 +66,40 @@ public class MainPage {
 
     @Step("Клик по разделу 'Булки'")
     public MainPage openBunsSection() {
+        wait.until(ExpectedConditions.elementToBeClickable(bunsSection));
         driver.findElement(bunsSection).click();
         return this;
     }
 
     @Step("Клик по разделу 'Соусы'")
     public MainPage openSouseSection() {
+        wait.until(ExpectedConditions.elementToBeClickable(souseSection));
         driver.findElement(souseSection).click();
         return this;
     }
 
     @Step("Клик по разделу 'Начинки'")
     public MainPage openToppingSection() {
+        wait.until(ExpectedConditions.elementToBeClickable(toppingSection));
         driver.findElement(toppingSection).click();
         return this;
     }
 
-    @Step("Проверка икспаса для раздела 'Булки'")
+    @Step("Проверка активности раздела 'Булки'")
     public boolean isBunsSectionActive() {
-        wait.until(ExpectedConditions.attributeContains(bunsSection, "class", "tab_tab_type_current__2BEPc"));
-        return driver.findElement(bunsSection).getAttribute("class").contains("tab_tab_type_current__2BEPc");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(activeBunsSection));
+        return driver.findElement(activeBunsSection).isDisplayed();
     }
 
-    @Step("Проверка икспаса для раздела 'Соусы'")
+    @Step("Проверка активности раздела 'Соусы'")
     public boolean isSouseSectionActive() {
-        wait.until(ExpectedConditions.attributeContains(souseSection, "class", "tab_tab_type_current__2BEPc"));
-        return driver.findElement(souseSection).getAttribute("class").contains("tab_tab_type_current__2BEPc");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(activeSouseSection));
+        return driver.findElement(activeSouseSection).isDisplayed();
     }
 
-    @Step("Проверка икспаса для раздела 'Начинки'")
+    @Step("Проверка активности раздела 'Начинки'")
     public boolean isToppingSectionActive() {
-        wait.until(ExpectedConditions.attributeContains(toppingSection, "class", "tab_tab_type_current__2BEPc"));
-        return driver.findElement(toppingSection).getAttribute("class").contains("tab_tab_type_current__2BEPc");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(activeToppingSection));
+        return driver.findElement(activeToppingSection).isDisplayed();
     }
 }

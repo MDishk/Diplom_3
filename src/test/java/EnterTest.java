@@ -1,20 +1,24 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.yandex.page.api.UserApi;
+import ru.yandex.page.data.CreateUser;
 import ru.yandex.page.data.UserData;
 
 public class EnterTest extends BaseActionsTest {
 
     UserApi userApi = new UserApi();
-    UserData user = new UserData();
+    UserData newUser;
     String accessToken;
 
     @Before
     public void setUp() {
-        ValidatableResponse response = userApi.createUser(user);
+        newUser = CreateUser.createRandomUser();
+        ValidatableResponse response = userApi.createUser(newUser);
         accessToken = response.extract().body().path("accessToken");
     }
 
@@ -26,28 +30,34 @@ public class EnterTest extends BaseActionsTest {
     }
 
     @Test
+    @DisplayName("Вход с главной страницы")
+    @Description("Проверка входа через кнопку 'Войти в аккаунт' на главной странице")
     public void enterFromMainPageTest() {
         mainPage
                 .openMainPage()
                 .clickEnterButton();
         loginPage
-                .userLogin("pupipu@mail.ru", "12pup56");
+                .userLogin(newUser.getEmail(), newUser.getPassword());
 
         Assert.assertTrue("Не удалось войти в аккаунт", mainPage.checkCreateOrderButton());
     }
 
     @Test
+    @DisplayName("Вход через кнопку 'Личный кабинет'")
+    @Description("Проверка входа через кнопку 'Личный Кабинет' на главной странице")
     public void enterByAccountButtonTest(){
         mainPage
                 .openMainPage()
                 .clickAccountButton();
         loginPage
-                .userLogin("pupipu@mail.ru", "12pup56");
+                .userLogin(newUser.getEmail(), newUser.getPassword());
 
         Assert.assertTrue("Не удалось войти в аккаунт", mainPage.checkCreateOrderButton());
     }
 
     @Test
+    @DisplayName("Вход со страницы регистрации")
+    @Description("Проверка входа через кнопку 'Войти' на странице регистрации")
     public void enterFromRegisterPageTest(){
         mainPage
                 .openMainPage()
@@ -57,12 +67,14 @@ public class EnterTest extends BaseActionsTest {
         registerPage
                 .clickEnterButton();
         loginPage
-                .userLogin("pupipu@mail.ru", "12pup56");
+                .userLogin(newUser.getEmail(), newUser.getPassword());
 
         Assert.assertTrue("Не удалось войти в аккаунт", mainPage.checkCreateOrderButton());
     }
 
     @Test
+    @DisplayName("Вход со страницы восстановления пароля")
+    @Description("Проверка входа через кнопку 'Войти' на странице восстановления пароля")
     public void enterFromForgotPasswordPageTest(){
         mainPage
                 .openMainPage()
@@ -72,7 +84,7 @@ public class EnterTest extends BaseActionsTest {
         forgotPasswordPage
                 .clickEnterButton();
         loginPage
-                .userLogin("pupipu@mail.ru", "12pup56");
+                .userLogin(newUser.getEmail(), newUser.getPassword());
 
         Assert.assertTrue("Не удалось войти в аккаунт", mainPage.checkCreateOrderButton());
     }

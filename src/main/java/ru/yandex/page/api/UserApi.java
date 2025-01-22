@@ -2,6 +2,7 @@ package ru.yandex.page.api;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
+import ru.yandex.page.data.LoginUser;
 import ru.yandex.page.data.UserData;
 import static io.restassured.RestAssured.given;
 
@@ -22,11 +23,10 @@ public class UserApi extends RestApi {
     }
 
     @Step("POST-запрос на авторизацию пользователя")
-    public ValidatableResponse loginUser(String email, String password) {
-        String loginBody = String.format("{\"email\": \"%s\", \"password\": \"%s\"}", email, password);
+    public ValidatableResponse loginUser(LoginUser login) {
         return given()
                 .spec(requestSpecification())
-                .and().body(loginBody)
+                .and().body(login)
                 .when().post(LOGIN_USER)
                 .then();
     }
